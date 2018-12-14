@@ -12,3 +12,5 @@ while not dupfound:
             dupfound = True
             print(f'Duplicate found: {total}')
             break
+
+# 56360
