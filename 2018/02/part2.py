@@ -4,7 +4,7 @@ def difby1(str1, str2):
         if str2[i] != c:
             errs += 1
         if errs > 1:
-            return false
+            return False
     return True if errs == 1 else False
 
 def rembadchar(str1, str2):
@@ -18,9 +18,15 @@ if __name__=='__main__':
     with open('day2inp.txt') as f:
         lines = f.readlines()
 
+    found = False
     for line in lines:
         for test in lines:
             if difby1(line, test):
                 print(rembadchar(line, test))
-                return
+                found = True
+                break
+        if found:
+            break
     print('None found')
+
+# mphcuasvrnjzzkbgdtqeoylva
