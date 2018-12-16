@@ -40,7 +40,10 @@ if __name__=='__main__':
 
     totalsleep = {curid : sum(ids[curid]) for curid in ids.keys()}
     sleepyguard = sorted(list(totalsleep.items()), key=lambda x : x[1])[-1][0]
-    badminute = max(ids[sleepyguard])
+    maxsleep = max(ids[sleepyguard])
+    badminutes = [i for i, j in enumerate(ids[sleepyguard]) if j == maxsleep]
     print(sleepyguard)
-    print(badminute)
-    # 16283 incorrect (low)
+    print(badminutes[0])
+    print(sleepyguard*badminutes[0])
+
+# 39422
