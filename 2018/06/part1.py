@@ -26,9 +26,20 @@ if __name__=='__main__':
     for i, coord in enumerate(coords):
         insertcoord(grid, coord, i)
 
-    gridofids = [cell[0] for x in grid for cell in x]
+    # Find all ids that are on edges and have infinite area
+    rem = set()
+    for x in range(xmax):
+        rem.add(grid[x][0][0])
+        rem.add(grid[x][ymax-1][0])
+    for y in range(1, ymax-1):
+        rem.add(grid[0][y][0])
+        rem.add(grid[xmax-1][y][0])
+
+    gridofids = [cell[0] for x in grid for cell in x if cell[0] not in rem]
 
     import itertools
     from collections import Counter
-    totals = Counter(i for i in list(itertools.chain.from_iterable(gridofids)))
-    print(max(totals))
+    totals = Counter(gridofids)
+    print(sorted(totals.items(), key = lambda x : x[1]))
+
+# 3909
