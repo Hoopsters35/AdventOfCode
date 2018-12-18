@@ -27,21 +27,21 @@ if __name__=='__main__':
         # Reduce time on each work
         counter += 1
         workers = list(map(lambda x : [x[0], x[1]-1] if x else None, workers))
-        pos = sorted(item[0] for item in reqs.items() if item[0] not in inprocess and len(item[1]) == 0)
-        # Populate work for workers
-        while pos and None in workers:
-            workers[workers.index(None)] = [pos[0], timeforchar(pos[0])]
-            inprocess.add(pos[0])
-            pos.remove(pos[0])
         finished = [(i, w[0]) for i, w in enumerate(workers) if w and w[1] == 0]
         for idx, finish in finished:
             workers[idx] = None
             reqs.pop(finish)
             order.append(finish)
             removeall(reqs, finish)
-        print(workers)
+
+        pos = sorted(item[0] for item in reqs.items() if item[0] not in inprocess and len(item[1]) == 0)
+        # Populate work for workers
+        while pos and None in workers:
+            workers[workers.index(None)] = [pos[0], timeforchar(pos[0])]
+            inprocess.add(pos[0])
+            pos.remove(pos[0])
 
     print(counter)
     
-# 907 incorrect
+# 896 incorrect
 
