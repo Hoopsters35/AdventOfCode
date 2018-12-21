@@ -1,10 +1,14 @@
 import matplotlib
 import matplotlib.pyplot as plt
+import matplotlib.animation as animation
 from time import sleep
-from pylab import *
-def display_nodes(positions):
-    plt.plot([position[0] for position in positions], [position[1] for position in positions], 'ro')
-    plt.show(block=True)
+import numpy as np
+
+def update_plot(i, nodes, scat):
+    positions = [node.position for node in nodes]
+    scat.set_offsets(([position[0] for position in positions], [position[1] for position in positions]))
+
+    return scat,
 
 class Node:
     def __init__(self, data):
@@ -27,12 +31,21 @@ if __name__=='__main__':
     matches = [tuple(map(lambda x : int(x), regex.match(line).groups())) for line in lines]
     nodes = [Node(match) for match in matches]
 
-    matplotlib.interactive(True)
+    numframes = 100
 
-    ion()
-    while True:
-        display_nodes([node.position for node in nodes])
-        for node in nodes:
-            node.move()
-        sleep(.01)
+    fig = plt.figure()
+    x, y = [node.position for node in nodes]
+    print(x)
+    positions = [node.position for node in nodes]
+    scat = plt.scatter([position[0] for position in positions], [position[1] for position in positions], s=100)
+
+    ani = animation.FuncAnimation(fig, update_plot, frames=range(numframes), fargs=(nodes, scat))
+
+    plt.show()
+    #while True:
+        #plt.pause(.0001)
+        #for node in nodes:
+            #node.move()
+        #positions = [node.position for node in nodes]
+        ##sc.scatter([position[0] for position in positions], [position[1] for position in positions])
 
