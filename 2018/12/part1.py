@@ -5,7 +5,7 @@ def get_char(index, negstate, posstate):
     char = ''
     if index < 0:
         if abs(index) <= len(negstate):
-            char = negstate[index]
+            char = negstate[abs(index)-1]
         else:
             char = NO_PLANT
     else:
@@ -17,7 +17,7 @@ def get_char(index, negstate, posstate):
 
 def put_char(c, i, negstate, posstate):
     if i < 0:
-        negstate.insert(i, c)
+        negstate.insert(abs(i)-1, c)
     else:
         posstate.insert(i, c)
 
@@ -35,19 +35,15 @@ def get_seg(target, negstate, posstate):
     return segment
 
 def strip_edges(negstate, posstate):
-    i = 0
-    while len(negstate) > 0 and negstate[i] == NO_PLANT:
-        negstate.pop(0)
     i = -1
+    while len(negstate) > 0 and negstate[i] == NO_PLANT:
+        negstate.pop()
     while len(posstate) > 0 and posstate[i] == NO_PLANT:
         posstate.pop()
 
 def apply_rules(negstate, posstate, rules):
     new_neg = []
     new_pos = []
-    indices = list(range(-len(negstate)-2, len(posstate)+2))
-    neg_nums = indices[0:indices.index(0)]
-    new_nums = indices[indices.index(0):]
     # iterate through negatives in abs value order
     for i in range(-len(negstate)-2, len(posstate)+2):
         segment = get_seg(i, negstate, posstate)
@@ -81,10 +77,6 @@ if __name__=='__main__':
     for _ in range(num_generations):
         negstate, posstate = apply_rules(negstate, posstate, rules)
 
-    negstate = []
-    posstate = ['#', '#']
-    rules = {'...##' : '#'}
-    print(apply_rules(negstate, posstate, rules))
-    #print(sum(get_flower_numbers(negstate, posstate)))
+    print(sum(get_flower_numbers(negstate, posstate)))
 
-# 1535, 2068 incorrect
+# 1991
