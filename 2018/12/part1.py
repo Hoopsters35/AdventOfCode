@@ -45,6 +45,10 @@ def strip_edges(negstate, posstate):
 def apply_rules(negstate, posstate, rules):
     new_neg = []
     new_pos = []
+    indices = list(range(-len(negstate)-2, len(posstate)+2))
+    neg_nums = indices[0:indices.index(0)]
+    new_nums = indices[indices.index(0):]
+    # iterate through negatives in abs value order
     for i in range(-len(negstate)-2, len(posstate)+2):
         segment = get_seg(i, negstate, posstate)
         char = ''
