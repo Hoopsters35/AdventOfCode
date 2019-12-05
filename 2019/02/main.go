@@ -36,10 +36,27 @@ func ProcessOpCodes(input []int) []int {
 }
 
 func PartOne(input []int) int {
-	input[1] = 12
-	input[2] = 2
-	input = ProcessOpCodes(input)
-	return input[0]
+	var testInput = make([]int, len(input))
+	copy(testInput, input)
+	testInput[1] = 12
+	testInput[2] = 2
+	testInput = ProcessOpCodes(testInput)
+	return testInput[0]
+}
+
+func PartTwo(input []int) int {
+	for noun := 0; noun <= 99; noun++ {
+		for verb := 0; verb <= 99; verb++ {
+			var test = make([]int, len(input))
+			copy(test, input)
+			test[1] = noun
+			test[2] = verb
+			if ProcessOpCodes(test)[0] == 19690720 {
+				return noun*100 + verb
+			}
+		}
+	}
+	return -1
 }
 
 func GetInput() []int {
@@ -64,4 +81,5 @@ func main() {
 	input := GetInput()
 
 	fmt.Printf("Answer to part 1: %d\n", PartOne(input))
+	fmt.Printf("Answer to part 2: %d\n", PartTwo(input))
 }
