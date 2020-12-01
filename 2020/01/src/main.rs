@@ -23,7 +23,7 @@ fn index_removed(list: &[i32], i: usize) -> Vec<i32> {
     return [l1, l2].concat();
 }
 
-fn find_pair(nums: &Vec<i32>, target: i32) -> (i32, i32) {
+fn find_pair(nums: &[i32], target: i32) -> (i32, i32) {
     let mut targets: HashSet<i32> = HashSet::new();
     for num in nums {
         if targets.contains(&num) {
@@ -35,12 +35,12 @@ fn find_pair(nums: &Vec<i32>, target: i32) -> (i32, i32) {
     return (-1, -1);
 }
 
-fn part1(nums: &Vec<i32>) -> i32 {
+fn part1(nums: &[i32]) -> i32 {
     let (num1, num2) = find_pair(&nums, 2020);
     return num1 * num2;
 }
 
-fn part2(nums: &Vec<i32>) -> i32 {
+fn part2(nums: &[i32]) -> i32 {
     for (i, first_val) in nums.iter().enumerate() {
         let target = 2020 - first_val;
         let remainin_vals = index_removed(&nums, i);
