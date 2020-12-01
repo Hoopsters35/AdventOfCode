@@ -18,9 +18,7 @@ fn main() {
 }
 
 fn index_removed(list: &[i32], i: usize) -> Vec<i32> {
-    let l1 = &list[..i];
-    let l2 = &list[i+1..];
-    return [l1, l2].concat();
+    return [&list[..i], &list[i+1..]].concat();
 }
 
 fn find_pair(nums: &[i32], target: i32) -> (i32, i32) {
@@ -28,9 +26,8 @@ fn find_pair(nums: &[i32], target: i32) -> (i32, i32) {
     for num in nums {
         if targets.contains(&num) {
             return (*num, (target - num));
-        } else {
-            targets.insert(target - num);
         }
+        targets.insert(target - num);
     }
     return (-1, -1);
 }
