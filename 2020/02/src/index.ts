@@ -30,17 +30,29 @@ const main = async () => {
         return corp_pass;
     });
 
-    console.log(passwords);
-    
-    console.log(valid_passwords(passwords).length);
+    // console.log(passwords);
+    console.log(validPasswords(passwords).length);
+    // 500
+
+    console.log(trulyValidPasswords(passwords).length);
+    // 313
     
 };
 
-const valid_passwords = (passwords: Array<CorporatePassword>): Array<CorporatePassword> => {
+const validPasswords = (passwords: Array<CorporatePassword>): Array<CorporatePassword> => {
     return passwords.filter(password => {
         const letterCount = (password.password.match(new RegExp(password.requirement.character, 'g')) || []).length;
         return letterCount >= password.requirement.minLength && letterCount <= password.requirement.maxLength;
     });
+}
+
+const trulyValidPasswords = (passwords: Array<CorporatePassword>): Array<CorporatePassword> => {
+    return passwords.filter(password => {
+        const ch = password.requirement.character;
+        const chAtMin = password.password.charAt(password.requirement.minLength - 1);
+        const chAtMax = password.password.charAt(password.requirement.maxLength - 1);
+        return (chAtMin == ch && chAtMax != ch) || (chAtMin != ch && chAtMax == ch);
+    })
 }
 
 main();
