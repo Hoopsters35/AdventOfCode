@@ -1,16 +1,29 @@
 import { promises as fs } from "fs";
 
-const main = async() => {
-    const content = await (await fs.readFile("data/customs.txt")).toString();
-    const groups = content.split("\n\n").map(group => group.split("\n"));
-    console.log(groups.map(group => totalYes(group)).reduce((sum, yesses) => sum + yesses));
-    // 6930
-    
-}
+const main = async () => {
+  const content = await (await fs.readFile("data/customs.txt")).toString();
+  const groups = content.split("\n\n").map((group) =>
+    group
+      .split("\n")
+      .filter((line) => line.length > 0)
+      .map((string) => new Set(string.split("")))
+  );
 
-const totalYes = (group: Array<string>): number => {
-    const letterSets = group.map(personString => new Set(personString.split("")))
-    return letterSets.reduce((yesses, currentYesses) => new Set([...yesses, ...currentYesses])).size;
-}
+  console.log(totalLength(groups.map(setUnions)));
+  // 6930
+  console.log(totalLength(groups.map(setIntersects)));
+  // 3585
+};
 
-main()
+const setUnions = (sets: Array<Set<string>>): Set<string> =>
+  sets.reduce((union, set) => new Set([...union, ...set]));
+
+const setIntersects = (sets: Array<Set<string>>): Set<string> =>
+  sets.reduce(
+    (union, set) => new Set([...union].filter((item) => set.has(item)))
+  );
+
+const totalLength = (sets: Array<Set<string>>): number =>
+  sets.map((set) => set.size).reduce((total, size) => total + size);
+
+main();
