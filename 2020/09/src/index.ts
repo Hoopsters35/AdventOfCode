@@ -9,6 +9,8 @@ const main = async () => {
 
   console.log(firstInvalid(numbers));
   // 23278925
+  console.log(encryptionWeakness(numbers));
+  // 4011064
 };
 
 const firstInvalid = (numbers: Array<number>): number => {
@@ -35,6 +37,28 @@ const sumOfTwo = (
     targets.add(target - num);
   }
   return null;
+};
+
+const encryptionWeakness = (numbers: Array<number>): number => {
+  const target = firstInvalid(numbers);
+
+  for (let i = 0; i < numbers.length - 1; i++) {
+    const first_num = numbers[i];
+    let sum = first_num;
+    let min = first_num;
+    let max = first_num;
+    for (const nextNum of numbers.slice(i + 1)) {
+      sum += nextNum;
+      min = Math.min(min, nextNum);
+      max = Math.max(max, nextNum);
+      if (sum == target) {
+        return min + max;
+      } else if (sum > target) {
+        break;
+      }
+    }
+  }
+  return -1;
 };
 
 main();
