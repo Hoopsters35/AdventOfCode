@@ -24,6 +24,9 @@ const main = async () => {
     });
 
   console.log(valueBeforeInfiniteLoop(instructions));
+  // 1563
+  console.log(valueOfFixedInstructions(instructions));
+  // 767
 };
 
 const strToOperation = (string: string): Operation => {
@@ -62,6 +65,75 @@ const valueBeforeInfiniteLoop = (instructions: Array<Instruction>): number => {
   }
 
   return value;
+};
+
+const valueOfFixedInstructions = (instructions: Array<Instruction>): number => {
+  const testIndices = jumpAndNopIndices(instructions);
+
+  for (let testIndex of testIndices) {
+    const testInstructions = instructions.map((instruction, index) => {
+      if (index != testIndex) {
+        return instruction;
+      }
+      return {
+        argument: instruction.argument,
+        operation:
+          instruction.operation == Operation.JUMP
+            ? Operation.NO_OPERATION
+            : Operation.JUMP,
+      };
+    });
+    const value = finalValueIfNotInfiniteLoop(testInstructions);
+    if (value > 0) {
+      return value;
+    }
+  }
+  return 0;
+};
+
+const jumpAndNopIndices = (instructions: Array<Instruction>): Array<number> => {
+  return instructions
+    .map((instruction, i) => {
+      return {
+        i,
+        instruction,
+      };
+    })
+    .filter(({ instruction }) => {
+      return (
+        instruction.operation == Operation.JUMP ||
+        instruction.operation == Operation.NO_OPERATION
+      );
+    })
+    .map(({ i }) => i);
+};
+
+const finalValueIfNotInfiniteLoop = (
+  instructions: Array<Instruction>
+): number => {
+  let instructionIndex = 0;
+  let value = 0;
+  const seenInstructions: Set<number> = new Set();
+  while (
+    !seenInstructions.has(instructionIndex) &&
+    instructionIndex < instructions.length
+  ) {
+    seenInstructions.add(instructionIndex);
+    const instruction = instructions[instructionIndex];
+    switch (instruction.operation) {
+      case Operation.ACCUMULATE:
+        value += instruction.argument;
+        instructionIndex++;
+        break;
+      case Operation.JUMP:
+        instructionIndex += instruction.argument;
+        break;
+      case Operation.NO_OPERATION:
+        instructionIndex++;
+        break;
+    }
+  }
+  return seenInstructions.has(instructionIndex) ? 0 : value;
 };
 
 main();
