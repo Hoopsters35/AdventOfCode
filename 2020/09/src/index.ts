@@ -15,7 +15,7 @@ const main = async () => {
 
 const firstInvalid = (numbers: Array<number>): number => {
   const previous5 = numbers.slice(0, 25);
-  for (let num of numbers.slice(25)) {
+  for (const num of numbers.slice(25)) {
     if (!sumOfTwo(previous5, num)) {
       return num;
     }
@@ -30,7 +30,7 @@ const sumOfTwo = (
   target: number
 ): [number, number] | null => {
   const targets: Set<number> = new Set();
-  for (let num of numbers) {
+  for (const num of numbers) {
     if (targets.has(num)) {
       return [num, target - num];
     }
